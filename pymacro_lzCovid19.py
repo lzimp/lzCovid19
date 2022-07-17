@@ -11,13 +11,14 @@ import matplotlib.pyplot as plt
 #print(mpl.matplotlib_fname())
 
 def datCovid():
-    cvDat = pd.read_excel("/home/dxlin/jobs/covid19/lanzhou_covid-19_202207.xlsx", engine='openpyxl')
+    cvDat = pd.read_excel("lanzhou_covid-19_202207.xlsx", engine='openpyxl')
     cvDat.rename(columns = {'Unnamed: 0':'date', 'Unnamed: 1':'week-day', 'Unnamed: 3':'Lanzhou1', 'Unnamed: 5':'Chengguan1'}, inplace=True)
     #print(cvDat['date'][idt].date(), cvDat['Lanzhou'][idt])
+    #print(cvDat)
     for idt in range(1, 28):
         cvDat['date'][idt] = cvDat['date'][idt].date()
 
-    start, end = 3, 12
+    start, end = 3, 13
     fig, axs = plt.subplots(1, 1, constrained_layout=True)
     axs.plot(cvDat['date'][start:end], cvDat['Lanzhou'][start:end], '-or', label="Lanzhou Confirmed")
     axs.plot(cvDat['date'][start:end], cvDat['Lanzhou1'][start:end], '-.dr', label="Lanzhou Asympomatic")
@@ -27,13 +28,19 @@ def datCovid():
     axs.set_xlabel("Date", fontsize=16, horizontalalignment='right', x=1.0)
     axs.set_ylabel("Number of Cases", fontsize=16, horizontalalignment='right', y=1.0)
 
+    ax2 = axs.twinx()
+    ax2.set_ylabel("Number of Close Contact", color='c', fontsize=16, horizontalalignment='right', y=1.0)
+    ax2.plot(cvDat['date'][start:end+1], cvDat['cc_1st'][start:end+1], '--pc', label="1st close contact")
+    ax2.plot(cvDat['date'][start:end+1], cvDat['cc_2nd'][start:end+1], '--sc', label="2nd close contact")
 
-    plt.legend(loc='best', facecolor='whitesmoke', edgecolor='black', fontsize=12)
+
+    axs.legend(loc='best', facecolor='whitesmoke', edgecolor='black', fontsize=10)
+    ax2.legend(loc='lower right', facecolor='whitesmoke', edgecolor='black', fontsize=10)
     plt.grid(axis='x', which='major', linestyle='--')
     plt.grid(axis='y', which='major', linestyle='--')
     
     #plt.show()
-    plt.savefig("lanzhou_covid19_220715.png", dpi=200)
+    plt.savefig("lanzhou_covid19_220716.png", dpi=200)
     
 
 def main():
