@@ -1,4 +1,10 @@
 # macro for the data (xlsx) of Lanzhou Covid19 in July
+# 
+# file requrie: lanzhou_covid-19_202207.xlsx
+#
+# Author: D.X.~Lin (Lanzhou)
+# Date: July 16, 2022
+#==============================================================
 
 import os, sys, platform, math
 import datetime as dt
@@ -18,7 +24,7 @@ def datCovid():
     for idt in range(1, 28):
         cvDat['date'][idt] = cvDat['date'][idt].date()
 
-    start, end = 3, 13
+    start, end = 3, 14
     fig, axs = plt.subplots(1, 1, constrained_layout=True)
     axs.plot(cvDat['date'][start:end], cvDat['Lanzhou'][start:end], '-or', label="Lanzhou Confirmed")
     axs.plot(cvDat['date'][start:end], cvDat['Lanzhou1'][start:end], '-.dr', label="Lanzhou Asympomatic")
@@ -40,7 +46,7 @@ def datCovid():
     plt.grid(axis='y', which='major', linestyle='--')
     
     #plt.show()
-    plt.savefig("lanzhou_covid19_220716.png", dpi=200)
+    plt.savefig("lanzhou_covid19_2207.png", dpi=200)
     
 
 def main():
