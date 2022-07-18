@@ -41,7 +41,7 @@ def datCovid():
 
 
     axs.legend(loc='best', facecolor='whitesmoke', edgecolor='black', fontsize=10)
-    ax2.legend(loc='lower right', facecolor='whitesmoke', edgecolor='black', fontsize=10)
+    ax2.legend(loc='center left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
     plt.grid(axis='x', which='major', linestyle='--')
     plt.grid(axis='y', which='major', linestyle='--')
     
