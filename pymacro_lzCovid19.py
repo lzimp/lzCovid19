@@ -48,8 +48,8 @@ def datCovid():
     plt.grid(axis='x', which='major', linestyle='--')
     plt.grid(axis='y', which='major', linestyle='--')
     
-    plt.show()
-    #plt.savefig("lanzhou_covid19_2207.png", dpi=200)
+    #plt.show()
+    plt.savefig("lanzhou_covid19_2207.png", dpi=200)
     #plt.clear()
 
     #cvDat['lzConAve'][start:end] = cvDat['Lanzhou'][start:end].rolling(7).mean()
