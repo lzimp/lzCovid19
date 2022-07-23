@@ -9,3 +9,4 @@
 # 6. Data sources: http://lz.bendibao.com/news/2022720/56851.shtm; for data on July 19, 2022
 # 7. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202207/2088510.shtml; for data on July 20, 2022
 # 8. Data sources: http://lz.bendibao.com/news/2022722/56888.shtm; for data on July 21, 2022
+# 9. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202207/2089869.shtml; for data on July 22, 2022
