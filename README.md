@@ -19,6 +19,10 @@
 #15. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202207/2093221.shtml; for data on July 28, 2022
 #16. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202207/2093704.shtml; for data on July 29, 2022
 #17. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202207/2093994.shtml; for data on July 30, 2022
+#18. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202208/2094219.shtml; for data on July 31, 2022
+#19. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202208/2095065.shtml; for data on Aug. 01, 2022
+#20. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202208/2096147.shtml; for data on Aug. 02, 2022
+#21. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202208/2096552.shtml; for data on Aug. 03, 2022
 
 
 

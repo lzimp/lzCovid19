@@ -127,6 +127,7 @@ def cdDataStats(cdfile):
     cdrTot15 = cvDat['cdpos15'].cumsum()
     cdravg15 = cvDat['cdpos15'].rolling(window=7).mean()
 
+    cvDat['cdpos15'] = cvDat['cdpos15'].fillna(0)
     cvDat['cdpos22'] = cvDat['cdpos22'].fillna(0)
     cvDat['cdpos'] = cvDat['cdpos15'] + cvDat['cdpos22']
     cdtwoavg = cvDat['cdpos'].rolling(window=7).mean()
