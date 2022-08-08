@@ -23,8 +23,14 @@
 #19. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202208/2095065.shtml; for data on Aug. 01, 2022
 #20. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202208/2096147.shtml; for data on Aug. 02, 2022
 #21. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202208/2096552.shtml; for data on Aug. 03, 2022
+#22. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202208/2097282.shtml; for data on Aug. 04, 2022
+#23. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202208/2098091.shtml; for data on Aug. 05, 2022
+#24. Data sources: http://wsjk.gansu.gov.cn/wsjk/c112713/202208/2098149.shtml; for data on Aug. 06, 2022
 
 
 
 # the following information is for Chengdu pandemic
-#1. Data sources: http://cd.bendibao.com/news/2020128/118443.shtm; for the '7.20' pandemic data recorded from July 22 to 29, 2022
+#1. Data sources: http://cd.bendibao.com/news/2020128/118443.shtm; for the '7.20' pandemic data recorded from July 22 to August 03, 2022
+
+# the following information is for Hainan pandemic
+#1 Data sources: https://wx.wind.com.cn/WindSariWeb/sari/messageInfo.html?province=hainan&lan=cn; for the data from Aug.01-07, 2022; there is no information about the number of asymptomatic-to-confirm cases for Aug.01-06,2022. 

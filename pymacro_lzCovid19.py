@@ -42,7 +42,7 @@ def datCovid(lzfile):
     #start, end = 3, 14
     fig, axs = plt.subplots(1, 1, constrained_layout=True)
     tday = str(dt.date.today())
-    axs.text(0.75, 0.95, 'by @lzimp (%s)'%(tday), transform=axs.transAxes, fontsize=8, color='gray', 
+    axs.text(0.15, 0.95, 'by @lzimp (%s)'%(tday), transform=axs.transAxes, fontsize=8, color='gray', 
             alpha=0.25, ha='center', va='center', rotation='0')
 
     axs.plot(cvDat['date'], cvDat['lzcon'], '-or', label="Lanzhou Confirmed")
@@ -59,8 +59,8 @@ def datCovid(lzfile):
     ax2.plot(cvDat['date'], cvDat['cc2nd'], '--sc', label="2nd close contact")
 
 
-    axs.legend(loc='best', facecolor='whitesmoke', edgecolor='black', fontsize=10)
-    ax2.legend(loc='center left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
+    axs.legend(loc='upper right', facecolor='whitesmoke', edgecolor='black', fontsize=10)
+    ax2.legend(loc='center right', facecolor='whitesmoke', edgecolor='black', fontsize=10)
     plt.grid(axis='x', which='major', linestyle='--')
     plt.grid(axis='y', which='major', linestyle='--')
     
@@ -94,9 +94,9 @@ def lzDataStats(lzfile):
     axs.text(0.75, 0.95, 'by @lzimp (%s)'%(tday), transform=axs.transAxes, fontsize=8, color='gray', 
             alpha=0.25, ha='center', va='center', rotation='0')
 
-    #axs.bar(tsdate, lzpstv, label='每日新增阳性')
+    #axs.bar(tsdate, lzpstv, label='兰州每日新增阳性')
     axs.bar(tsdate, lzpstv, label='LZ daily pos')
-    #axs.plot(tsdate, lzravg, '-or', label='七日平均阳性')
+    #axs.plot(tsdate, lzravg, '-or', label='兰州七日平均阳性')
     axs.plot(tsdate, lzravg, '-or', label='LZ 7days avg')
 
     axs.tick_params(axis='x', labelrotation=45)
@@ -158,14 +158,50 @@ def cdDataStats(cdfile):
     #plt.show()     
     plt.savefig("chengdu_pstvStats2207.png", dpi=200)
 
+def hnDataStats(hnfile):
+
+    hnCovid = covidData(hnfile)
+    hnCovid.loadData()
+    cvDat = hnCovid.covidData
+    tsdate = cvDat['date']
+
+    cvDat['hnpos'] = cvDat['hncon'] + cvDat['hnasy'] - cvDat['hnasytocon']
+    hnpstv = cvDat['hnpos']
+    hnrTot = cvDat['hnpos'].cumsum()
+    hnravg = cvDat['hnpos'].rolling(window=7).mean()
+
+    #print(lzravg, cgravg)
+    print(cvDat)
+
+    fig, axs = plt.subplots(1, 1, constrained_layout=True)
+    tday = str(dt.date.today())
+    axs.text(0.75, 0.95, 'by @lzimp (%s)'%(tday), transform=axs.transAxes, fontsize=8, color='gray', 
+            alpha=0.25, ha='center', va='center', rotation='0')
+
+    axs.bar(tsdate, hnpstv, alpha=0.75, label='HN daily pos')
+    axs.plot(tsdate, hnravg, '-or', label='HN 7days avg')
+
+    axs.tick_params(axis='x', labelrotation=45)
+    axs.set_xlabel("Date", fontsize=16, horizontalalignment='right', x=1.0)
+    axs.set_ylabel("Number of Cases", fontsize=16, horizontalalignment='right', y=1.0)
+
+    axs.legend(loc='upper left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
+    plt.grid(axis='x', which='major', linestyle='--')
+    plt.grid(axis='y', which='major', linestyle='--')
+
+    #plt.show()     
+    plt.savefig("hainan_pstvStats2207.png", dpi=200)
+
 
 def main():
 
-    lzfile = "/home/dxlin/jobs/csLearn/lzCovid19/lanzhou_covid-19_202207.xlsx"
+    lzfile = "lanzhou_covid-19_202207.xlsx"
     datCovid(lzfile)
     lzDataStats(lzfile)
-    cdfile = "/home/dxlin/jobs/csLearn/lzCovid19/chengdu_covid19.xlsx"
+    cdfile = "chengdu_covid19.xlsx"
     cdDataStats(cdfile)
+    hnfile = "hainan_covid19.xlsx"
+    hnDataStats(hnfile)
 
 if __name__ == '__main__':
 
