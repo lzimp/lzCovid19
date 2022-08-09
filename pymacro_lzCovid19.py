@@ -101,7 +101,7 @@ def lzDataStats(lzfile):
 
     axs.tick_params(axis='x', labelrotation=45)
     axs.set_xlabel("Date", fontsize=16, horizontalalignment='right', x=1.0)
-    axs.set_ylabel("Number of Cases", fontsize=16, horizontalalignment='right', y=1.0)
+    axs.set_ylabel("Number of Daily Cases", fontsize=16, horizontalalignment='right', y=1.0)
 
     axs.legend(loc='upper left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
     plt.grid(axis='x', which='major', linestyle='--')
@@ -149,7 +149,7 @@ def cdDataStats(cdfile):
 
     axs.tick_params(axis='x', labelrotation=45)
     axs.set_xlabel("Date", fontsize=16, horizontalalignment='right', x=1.0)
-    axs.set_ylabel("Number of Cases", fontsize=16, horizontalalignment='right', y=1.0)
+    axs.set_ylabel("Number of Daily Cases", fontsize=16, horizontalalignment='right', y=1.0)
 
     axs.legend(loc='upper left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
     plt.grid(axis='x', which='major', linestyle='--')
@@ -167,7 +167,8 @@ def hnDataStats(hnfile):
 
     cvDat['hnpos'] = cvDat['hncon'] + cvDat['hnasy'] - cvDat['hnasytocon']
     hnpstv = cvDat['hnpos']
-    hnrTot = cvDat['hnpos'].cumsum()
+    cvDat['hntot'] = cvDat['hnpos'].cumsum()
+    hnrTot = cvDat['hntot']
     hnravg = cvDat['hnpos'].rolling(window=7).mean()
 
     #print(lzravg, cgravg)
@@ -183,9 +184,14 @@ def hnDataStats(hnfile):
 
     axs.tick_params(axis='x', labelrotation=45)
     axs.set_xlabel("Date", fontsize=16, horizontalalignment='right', x=1.0)
-    axs.set_ylabel("Number of Cases", fontsize=16, horizontalalignment='right', y=1.0)
+    axs.set_ylabel("Number of Daily Cases", fontsize=16, horizontalalignment='right', y=1.0)
+
+    ax2 = axs.twinx()
+    ax2.set_ylabel("Number of Total Cases", color='c', fontsize=16, horizontalalignment='right', y=1.0)
+    ax2.plot(tsdate, hnrTot, '--g', label='HN total (TD)')
 
     axs.legend(loc='upper left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
+    ax2.legend(loc='center left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
     plt.grid(axis='x', which='major', linestyle='--')
     plt.grid(axis='y', which='major', linestyle='--')
 
