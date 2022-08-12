@@ -188,7 +188,7 @@ def hnDataStats(hnfile):
 
     ax2 = axs.twinx()
     ax2.set_ylabel("Number of Total Cases", color='c', fontsize=16, horizontalalignment='right', y=1.0)
-    ax2.plot(tsdate, hnrTot, '--g', label='HN total (TD)')
+    ax2.plot(tsdate, hnrTot, '--c', label='HN total (TD)')
 
     axs.legend(loc='upper left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
     ax2.legend(loc='center left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
@@ -201,9 +201,9 @@ def hnDataStats(hnfile):
 
 def main():
 
-    lzfile = "lanzhou_covid-19_202207.xlsx"
-    datCovid(lzfile)
-    lzDataStats(lzfile)
+    #lzfile = "lanzhou_covid-19_202207.xlsx"
+    #datCovid(lzfile)
+    #lzDataStats(lzfile)
     cdfile = "chengdu_covid19.xlsx"
     cdDataStats(cdfile)
     hnfile = "hainan_covid19.xlsx"
