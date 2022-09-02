@@ -13,6 +13,24 @@ import numpy as np
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+from statsmodels.tsa.statespace.sarimax import SARIMAX
+# Modeling and Forecasting
+# ==============================================================================
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Lasso
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
+
+from skforecast.ForecasterAutoreg import ForecasterAutoreg
+from skforecast.ForecasterAutoregCustom import ForecasterAutoregCustom
+from skforecast.ForecasterAutoregMultiOutput import ForecasterAutoregMultiOutput
+from skforecast.model_selection import grid_search_forecaster
+from skforecast.model_selection import backtesting_forecaster
+
 #plt.style.use('classic')
 #print(mpl.matplotlib_fname())
 from matplotlib.font_manager import FontProperties
@@ -106,6 +124,8 @@ def lzDataStats(lzfile):
     axs.legend(loc='upper left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
     plt.grid(axis='x', which='major', linestyle='--')
     plt.grid(axis='y', which='major', linestyle='--')
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'))
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator())
 
     #plt.show()     
     plt.savefig("lanzhou_pstvStats2207.png", dpi=200)
@@ -154,33 +174,65 @@ def cdDataStats(cdfile):
     axs.legend(loc='upper left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
     plt.grid(axis='x', which='major', linestyle='--')
     plt.grid(axis='y', which='major', linestyle='--')
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'))
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=4))
 
     #plt.show()     
     plt.savefig("chengdu_pstvStats2207.png", dpi=200)
 
-def hnDataStats(hnfile):
+def hnDataStats(hnfile, pname):
+    if pname == "hainan":
+        pnm = "HN"
+    elif pname == "sichuan":
+        pnm = "SC"
+
 
     hnCovid = covidData(hnfile)
     hnCovid.loadData()
     cvDat = hnCovid.covidData
     tsdate = cvDat['date']
 
-    cvDat['hnpos'] = cvDat['hncon'] + cvDat['hnasy'] - cvDat['hnasytocon']
-    hnpstv = cvDat['hnpos']
-    cvDat['hntot'] = cvDat['hnpos'].cumsum()
-    hnrTot = cvDat['hntot']
-    hnravg = cvDat['hnpos'].rolling(window=7).mean()
+    cvDat['pos'] = cvDat['con'] + cvDat['asy'] - cvDat['asytocon']
+    hnpstv = cvDat['pos']
+    cvDat['tot'] = cvDat['pos'].cumsum()
+    hnrTot = cvDat['tot']
+    hnravg = cvDat['pos'].rolling(window=7).mean()
 
     #print(lzravg, cgravg)
     print(cvDat)
+
+    pmdl = SARIMAX(hnpstv, order=(1, 1, 1), seasonal_order=(0, 0, 0, 0))
+    fmdl = pmdl.fit(disp=False)
+    ndays = len(hnpstv)
+    fdate, fcase = [], []
+    fdt = tsdate[ndays-1]
+    for fday in range(ndays, ndays+10):
+        case = fmdl.predict(fday, fday)
+        fdt = fdt + dt.timedelta(days=1)
+        fdate.append(fdt)
+        for cs in case.tolist():
+            #print(cs)
+            fcase.append(cs)
+
+    #=====================================================
+    # creat and train forecaster
+    regressor = RandomForestRegressor(random_state=123, max_depth=3, n_estimators=20)
+    forecaster = ForecasterAutoreg(regressor=regressor, lags=5)
+    forecaster.fit(y=hnpstv)
+    #print(forecaster)
+    preCases = forecaster.predict(steps=10)
+    #print(preCases)
 
     fig, axs = plt.subplots(1, 1, constrained_layout=True)
     tday = str(dt.date.today())
     axs.text(0.75, 0.95, 'by @lzimp (%s)'%(tday), transform=axs.transAxes, fontsize=8, color='gray', 
             alpha=0.25, ha='center', va='center', rotation='0')
 
-    axs.bar(tsdate, hnpstv, alpha=0.75, label='HN daily pos')
-    axs.plot(tsdate, hnravg, '-or', label='HN 7days avg')
+    axs.bar(tsdate, hnpstv, alpha=0.75, label='%s daily pos'%(pnm))
+    axs.plot(tsdate, hnravg, '-or', label='%s 7days avg'%(pnm))
+    #axs.plot(fdate, fcase, '--gd', label='simple prediction')
+    #axs.plot(fdate, preCases, '--gd', label='simple prediction')
 
     axs.tick_params(axis='x', labelrotation=45)
     axs.set_xlabel("Date", fontsize=16, horizontalalignment='right', x=1.0)
@@ -188,15 +240,18 @@ def hnDataStats(hnfile):
 
     ax2 = axs.twinx()
     ax2.set_ylabel("Number of Total Cases", color='c', fontsize=16, horizontalalignment='right', y=1.0)
-    ax2.plot(tsdate, hnrTot, '--c', label='HN total (TD)')
+    ax2.plot(tsdate, hnrTot, '--c', label='%s total (TD)'%(pnm))
 
     axs.legend(loc='upper left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
     ax2.legend(loc='center left', facecolor='whitesmoke', edgecolor='black', fontsize=10)
     plt.grid(axis='x', which='major', linestyle='--')
     plt.grid(axis='y', which='major', linestyle='--')
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'))
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=2))
 
-    #plt.show()     
-    plt.savefig("hainan_pstvStats2207.png", dpi=200)
+    #plt.show()
+    plt.savefig("%s_pstvStats2207.png"%(pname), dpi=200)
 
 
 def main():
@@ -204,10 +259,14 @@ def main():
     #lzfile = "lanzhou_covid-19_202207.xlsx"
     #datCovid(lzfile)
     #lzDataStats(lzfile)
-    cdfile = "chengdu_covid19.xlsx"
-    cdDataStats(cdfile)
-    hnfile = "hainan_covid19.xlsx"
-    hnDataStats(hnfile)
+    #cdfile = "chengdu_covid19.xlsx"
+    #cdDataStats(cdfile)
+    plist = ["hainan", "sichuan"]
+    
+    for pname in plist:
+        hnfile = "%s_covid19.xlsx"%(pname)
+        print(hnfile)
+        hnDataStats(hnfile, pname)
 
 if __name__ == '__main__':
 
