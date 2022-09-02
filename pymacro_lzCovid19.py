@@ -264,7 +264,7 @@ def main():
     plist = ["hainan", "sichuan"]
     
     for pname in plist:
-        hnfile = "%s_covid19.xlsx"%(pname)
+        hnfile = "stsData2022/%s_covid19.xlsx"%(pname)
         print(hnfile)
         hnDataStats(hnfile, pname)
 
