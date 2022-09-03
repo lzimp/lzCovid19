@@ -251,7 +251,7 @@ def hnDataStats(hnfile, pname):
     plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=2))
 
     #plt.show()
-    plt.savefig("%s_pstvStats2207.png"%(pname), dpi=200)
+    plt.savefig("resStats2022/%s_pstvStats2207.png"%(pname), dpi=200)
 
 
 def main():
